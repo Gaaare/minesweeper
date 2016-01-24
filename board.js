@@ -71,6 +71,7 @@ $(document).ready(function(){
 		}
 		
 	}
+	
 	 $(document).on("click","#board div",function(){
 		checkAdjacent(this);
 		$(this).addClass("clicked");
