@@ -70,6 +70,7 @@ $(document).ready(function(){
 			}
 		}
 		
+	
 	}
 	
 	 $(document).on("click","#board div",function(){
