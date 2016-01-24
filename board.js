@@ -36,7 +36,9 @@ $(document).ready(function(){
 					$("#board").append("<br>");
 			   }
 			}
-		}		
+		}	
+		$("#minecounter").empty();
+		$("#minecounter").append("<p>"+mineCount+" mines </p>");		
 	}
 	
 	function checkAdjacent(tile){
@@ -48,12 +50,14 @@ $(document).ready(function(){
 		if(board[tileY][tileX]===true){
 			alert("you lose");
 			console.log(tileX+" "+tileY);
+			mineCount=0;
 			addMines();
 			drawBoard();
 		}else{
 			if(tile.hasClass("clicked")){	
 				return 0;
 			}else{				
+			    console.log(tileX+" "+tileY);
 				if(board[tileY-1][tileX-1]===true){adjCount+=1;}
 				if(board[tileY-1][tileX]===true){adjCount+=1;}
 				if(board[tileY-1][tileX+1]===true){adjCount+=1;}
@@ -75,5 +79,4 @@ $(document).ready(function(){
 	})
 	addMines();
 	drawBoard();
-	$("#minecounter").append("<p>"+mineCount+" mines </p>");
 })
