@@ -1,0 +1,22 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+#board{
+	width:340px;
+	display:block;
+	clear:both;
+}
+.tile, .mineTile{
+	width:30px;
+	height:30px;
+	border:solid black 2px;
+	float:left;
+}
+.mineTile{
+	background-color: red;
+}
+#minecounter{
+	clear:both;
+}
