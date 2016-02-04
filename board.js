@@ -3,7 +3,7 @@ $(document).ready(function(){
 	var board = new Array();
 	var boardWidth=10;
 	var boardHeight=10;
-	var numOfMines= 5;
+	var numOfMines= 20;
 	var isMine = true;
 	var mineCount = 0;
 	
@@ -14,15 +14,15 @@ $(document).ready(function(){
 			
 				var mineGenerate = Math.floor((Math.random() * 10) + 1);
 				
-				if(mineGenerate >= 9){
+				if(mineCount >= numOfMines){
+					board[y][x] = false;
+				}else if(mineGenerate >= 9){
 					mineCount +=1;
 					board[y][x] = isMine;
 					console.log(mineCount);
 					
 				} 
-				 if(mineCount >= numOfMines){
-					board[y][x] = false;
-				}		
+				 	
 			}
 		}
 	}
@@ -70,81 +70,131 @@ $(document).ready(function(){
 			}
 		}
 	}
-/* 	function revealSurrounding(y,x){
-		
-		$("div[data-x="+(x-1)+"][data-y="+(y-1)+"]").addClass("clicked").append(checkAdjacent(y-1,x-1));
-		$("div[data-x="+x+"][data-y="+(y-1)+"]").addClass("clicked").append(checkAdjacent(y-1,x));
-		$("div[data-x="+(x+1)+"][data-y="+(y-1)+"]").addClass("clicked").append(checkAdjacent(y-1,x+1));		
-		$("div[data-x="+(x-1)+"][data-y="+y+"]").addClass("clicked").append(checkAdjacent(y,x-1));		
-		$("div[data-x="+(x+1)+"][data-y="+y+"]").addClass("clicked").append(checkAdjacent(y,x+1));		
-		$("div[data-x="+(x-1)+"][data-y="+(y+1)+"]").addClass("clicked").append(checkAdjacent(y+1,x-1));		
-		$("div[data-x="+x+"][data-y="+(y+1)+"]").addClass("clicked").append(checkAdjacent(y+1,x));		
-		$("div[data-x="+(x+1)+"][data-y="+(y+1)+"]").addClass("clicked").append(checkAdjacent(y+1,x+1));
-	} */
+
 	function expand(y, x){
 		var zero = 0;
 		var surrounding=surroundingDivs(y,x);
-		if(findZeroes(expandZeroes, "y", y-1, "x", x-1)===true && (!$(surrounding[0]).hasClass("clicked"))){			
-		surrounding[0].append(zero);	
+		
+		if(y > 0 && x > 0 && findZeroes(expandZeroes, "y", y-1, "x", x-1) && 
+		(!$(surrounding[0]).hasClass("clicked"))){			
+			surrounding[0].append(zero)
 			surrounding[0].addClass("clicked");
-			expand(y-1,x-1);
+			expand(y-1, x-1);
+		}else if(y > 0 && x > 0 && !findZeroes(expandZeroes, "y", y-1, "x", x-1) && 
+		(!$(surrounding[0]).hasClass("clicked"))){			
+			$(surrounding[0]).addClass("clicked");
+			$(surrounding[0]).empty();
+			$(surrounding[0]).append(checkAdjacent(y-1, x-1));
 		}
-		if(findZeroes(expandZeroes, "y", y-1, "x", x)===true && (!$(surrounding[1]).hasClass("clicked"))){			
+		
+		if(y > 0 && findZeroes(expandZeroes, "y", y-1, "x", x)===true && 
+		(!$(surrounding[1]).hasClass("clicked"))){			
 			surrounding[1].append(zero);	
 			surrounding[1].addClass("clicked");
-			expand(y-1,x);
+			expand(y-1, x);
+		}else if(y > 0 && !findZeroes(expandZeroes, "y", y-1, "x", x) && 
+		(!$(surrounding[1]).hasClass("clicked"))){			
+			$(surrounding[1]).addClass("clicked");
+			$(surrounding[1]).empty();
+			$(surrounding[1]).append(checkAdjacent(y-1, x));
 		}
-		if(findZeroes(expandZeroes, "y", y-1, "x", x+1)===true && (!$(surrounding[2]).hasClass("clicked"))){			
+		
+		if(y > 0 && x < 9 && findZeroes(expandZeroes, "y", y-1, "x", x+1)===true && 
+		(!$(surrounding[2]).hasClass("clicked"))){			
 			surrounding[2].append(zero);	
 			surrounding[2].addClass("clicked");
-			expand(y-1,x+1);
+			expand(y-1, x+1);
+		}else if(y > 0 && x < 9 && !findZeroes(expandZeroes, "y", y-1, "x", x+1) && 
+		(!$(surrounding[2]).hasClass("clicked"))){			
+			$(surrounding[2]).addClass("clicked");
+			$(surrounding[2]).empty();
+			$(surrounding[2]).append(checkAdjacent(y-1, x+1));
 		}
-		if(findZeroes(expandZeroes, "y", y, "x", x-1)===true && (!$(surrounding[3]).hasClass("clicked"))){			
+		
+		if(x > 0 && findZeroes(expandZeroes, "y", y, "x", x-1)===true && 
+		(!$(surrounding[3]).hasClass("clicked"))){			
 			surrounding[3].append(zero);	
 			surrounding[3].addClass("clicked");
-			expand(y,x-1);
+			expand(y, x-1);
+		}else if(x > 0 && !findZeroes(expandZeroes, "y", y, "x", x-1) && 
+		(!$(surrounding[3]).hasClass("clicked"))){			
+			$(surrounding[3]).addClass("clicked");
+			$(surrounding[3]).empty();
+			$(surrounding[3]).append(checkAdjacent(y, x-1));
 		}
-		if(findZeroes(expandZeroes, "y", y, "x", x+1)===true && (!$(surrounding[4]).hasClass("clicked"))){			
+		
+		if(x < 9 && findZeroes(expandZeroes, "y", y, "x", x+1)===true && 
+		(!$(surrounding[4]).hasClass("clicked"))){			
 			surrounding[4].append(zero);	
 			surrounding[4].addClass("clicked");
-			expand(y,x+1);
+			expand(y, x+1);
+		}else if(x < 9 && !findZeroes(expandZeroes, "y", y, "x", x-1) && 
+		(!$(surrounding[4]).hasClass("clicked"))){			
+			$(surrounding[4]).addClass("clicked");
+			$(surrounding[4]).empty();
+			$(surrounding[4]).append(checkAdjacent(y, x+1));
 		}
-		if(findZeroes(expandZeroes, "y", y+1, "x", x-1)===true && (!$(surrounding[5]).hasClass("clicked"))){			
+		
+		if(y < 9 && x > 0 && findZeroes(expandZeroes, "y", y+1, "x", x-1)===true && 
+		(!$(surrounding[5]).hasClass("clicked"))){			
 			surrounding[5].append(zero);	
 			surrounding[5].addClass("clicked");
-			expand(y+1,x-1);
+			expand(y+1, x-1);
+		}else if(y < 9 && x > 0 && !findZeroes(expandZeroes, "y", y+1, "x", x-1) && 
+		(!$(surrounding[5]).hasClass("clicked"))){			
+			$(surrounding[5]).addClass("clicked");
+			$(surrounding[5]).empty();
+			$(surrounding[5]).append(checkAdjacent(y+1, x-1));
 		}
-		if(findZeroes(expandZeroes, "y", y+1, "x", x)===true && (!$(surrounding[6]).hasClass("clicked"))){			
+		
+		if(y < 9 && findZeroes(expandZeroes, "y", y+1, "x", x)===true && 
+		(!$(surrounding[6]).hasClass("clicked"))){			
 			surrounding[6].append(zero);	
 			surrounding[6].addClass("clicked");
-			expand(y+1,x);
+			expand(y+1, x);
+		}else if(y < 9 && !findZeroes(expandZeroes, "y", y+1, "x", x) && 
+		(!$(surrounding[6]).hasClass("clicked"))){			
+			$(surrounding[6]).addClass("clicked");
+			$(surrounding[6]).empty();
+			$(surrounding[6]).append(checkAdjacent(y+1, x));
 		}
-		if(findZeroes(expandZeroes, "y", y+1, "x", x+1)===true && (!$(surrounding[7]).hasClass("clicked"))){			
+		
+		if(y < 9 && x < 9 && findZeroes(expandZeroes, "y", y+1, "x", x+1)===true && 
+		(!$(surrounding[7]).hasClass("clicked"))){			
 			surrounding[7].append(zero);	
 			surrounding[7].addClass("clicked");
-			expand(y+1,x+1);
+			expand(y+1, x+1);
+		}else if(y < 9 && x < 9 && !findZeroes(expandZeroes, "y", y+1, "x", x+1) && 
+		(!$(surrounding[7]).hasClass("clicked"))){			
+			$(surrounding[7]).addClass("clicked");
+			$(surrounding[7]).empty();
+			$(surrounding[7]).append(checkAdjacent(y+1, x+1));
 		}
 	}
 	
 	function checkAdjacent(y, x){
-		var tileX= x;
-		var tileY= y;
+		var x= parseInt(x);
+		var y= parseInt(y);
 		
 		var adjCount=0;
 					
-			    //console.log(tileX+" "+tileY);
-				if(tileY > 0){
-					if(tileX > 0){if(board[tileY-1][tileX-1]===true){adjCount+=1;}}
-					if(board[tileY-1][tileX]===true){adjCount+=1;}
-					if(board[tileY-1][tileX+1]===true){adjCount+=1;}
+			    //console.log(x+" "+y);
+				
+				if(y > 0){
+					if(x > 0){if(board[y-1][x-1]===true){adjCount+=1;}}
+					if(board[y-1][x]===true){adjCount+=1;}
+					if(board[y-1][x+1]===true){adjCount+=1;}
 				}
-				if(board[tileY][tileX-1]===true){adjCount+=1;}
-				if(board[tileY][tileX+1]===true){adjCount+=1;}
-				if(tileY < 9){
-					if(tileX > 0){if(board[tileY+1][tileX-1]===true){adjCount+=1;}}
-					if(board[tileY+1][tileX]===true){adjCount+=1;}
-					if(board[tileY+1][tileX+1]===true){adjCount+=1;} 
-				}				
+				if(x > 0){
+					if(board[y][x-1]===true){adjCount+=1;}
+					}
+				if(board[y][x+1]===true){adjCount+=1;}
+				if(y < 9){
+					if(x > 0){if(board[y+1][x-1]===true){adjCount+=1;}}
+					if(board[y+1][x]===true){adjCount+=1;}
+					if(board[y+1][x+1]===true){adjCount+=1;}
+				}
+							
 				return adjCount;				
 			}
 		//}	
@@ -167,12 +217,12 @@ $(document).ready(function(){
 	
 	 
 	$(document).on("click","#board div",function(){		 
-		var tileX= parseInt($(this).attr("data-x"));
-		var tileY= parseInt($(this).attr("data-y"));
+		var x= parseInt($(this).attr("data-x"));
+		var y= parseInt($(this).attr("data-y"));
 		
-		if(board[tileY][tileX]===isMine){
+		if(board[y][x]===isMine){
 			alert("you lose");
-			console.log(tileX+" "+tileY);
+			console.log(x+" "+y);
 			mineCount=0;
 			addMines();
 			drawBoard();
@@ -181,13 +231,13 @@ $(document).ready(function(){
 			if($(this).hasClass("clicked")){	
 					return 0;
 				}else{
-					//checkAdjacent(tileX,tileY);
+					//checkAdjacent(x,y);
 					$(this).addClass("clicked");
-					$(this).append("<p>"+checkAdjacent(tileY,tileX)+"</p>");
-					if(checkAdjacent(tileY, tileX)===0)
+					$(this).append("<p>"+checkAdjacent(y,x)+"</p>");
+					if(checkAdjacent(y, x)===0)
 					{
-						expand(tileY, tileX);
-						//$("div[data-x="+tileX+"][data-y="+tileY+"]").append(adjCount);
+						expand(y, x);
+						//$("div[data-x="+x+"][data-y="+y+"]").append(adjCount);
 					} 
 				}
 			//alert(1);
@@ -197,8 +247,8 @@ $(document).ready(function(){
 	addMines();
 	drawBoard();
 	addZeroes();
-	console.log(expandZeroes);
+//	console.log(expandZeroes);
 	
 })
 
-//$("div[data-x="+tileX+"][data-y="+tileY+"]").append(adjCount);
+//$("div[data-x="+x+"][data-y="+y+"]").append(adjCount);
