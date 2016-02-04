@@ -128,7 +128,7 @@ $(document).ready(function(){
 			surrounding[4].append(zero);	
 			surrounding[4].addClass("clicked");
 			expand(y, x+1);
-		}else if(x < 9 && !findZeroes(expandZeroes, "y", y, "x", x-1) && 
+		}else if(x < 9 && !findZeroes(expandZeroes, "y", y, "x", x+1) && 
 		(!$(surrounding[4]).hasClass("clicked"))){			
 			$(surrounding[4]).addClass("clicked");
 			$(surrounding[4]).empty();
