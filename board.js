@@ -207,28 +207,35 @@ $(document).ready(function(){
 					if(checkAdjacent(y,x)===0){				
 						expandZeroes.push({y: y,x: x});
 						//console.log(expandZeroes);
-						}
 					}
-				}		
-			}
+				}
+			}		
 		}
-	
-	
-	
-	 
-	$(document).on("click","#board div",function(){		 
-		var x= parseInt($(this).attr("data-x"));
-		var y= parseInt($(this).attr("data-y"));
+	}
 		
-		if(board[y][x]===isMine){
+	
+	
+	
+
+	$(document).on("click","#board div",function(e){		 
+		var x= parseInt($(this).attr("data-x"));
+		var y= parseInt($(this).attr("data-y"));	
+		if(e.shiftKey){
+			if(!$(this).hasClass("marked")){
+				$(this).addClass("marked");
+				$(this).append("X");
+			}else{
+				$(this).empty();
+				$(this).removeClass("marked");
+			}
+		}else if(board[y][x]===isMine && (!$(this).hasClass("marked"))){
 			alert("you lose");
 			console.log(x+" "+y);
 			mineCount=0;
 			addMines();
 			drawBoard();
 			addZeroes();
-		}else{		
-			if($(this).hasClass("clicked")){	
+		}else if($(this).hasClass("clicked")){	
 					return 0;
 				}else{
 					//checkAdjacent(x,y);
@@ -242,10 +249,9 @@ $(document).ready(function(){
 				}
 			//alert(1);
 			return false;
-		}
-	})
+	})	
 	$(document).on("click","#cheater",function(){
-		$(".mineTile").css("background-color","red");
+		$(".mineTile").toggleClass("cheat");		
 	})	
 	addMines();
 	drawBoard();

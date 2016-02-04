@@ -16,10 +16,15 @@
 	font-size: 30px;
 	text-align:center;
 	overflow:hidden;
+	
+}
+.cheat{
+	background-color:red;	
+}
+.marked{
+	background-color:green;
 }
 
-.mineTile{
-}
 #minecounter{
 	clear:both;
 }
