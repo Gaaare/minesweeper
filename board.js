@@ -1,9 +1,9 @@
 var expandZeroes= new Array();
 $(document).ready(function(){
-	var board = Array();
+	var board = new Array();
 	var boardWidth=10;
 	var boardHeight=10;
-	var numOfMines= 25;
+	var numOfMines= 5;
 	var isMine = true;
 	var mineCount = 0;
 	
@@ -18,11 +18,29 @@ $(document).ready(function(){
 					mineCount +=1;
 					board[y][x] = isMine;
 					console.log(mineCount);
+					
+				} 
+				 if(mineCount >= numOfMines){
+					board[y][x] = false;
 				}		
 			}
 		}
 	}
 	//console.log(mineCount);
+	
+	function surroundingDivs(y,x){
+		var surrounding = new Array();
+		surrounding[0]=$("div[data-x="+(x-1)+"][data-y="+(y-1)+"]");
+		surrounding[1]=$("div[data-x="+x+"][data-y="+(y-1)+"]");
+		surrounding[2]=$("div[data-x="+(x+1)+"][data-y="+(y-1)+"]");
+		surrounding[3]=$("div[data-x="+(x-1)+"][data-y="+y+"]");
+		surrounding[4]=$("div[data-x="+(x+1)+"][data-y="+y+"]");
+		surrounding[5]=$("div[data-x="+(x-1)+"][data-y="+(y+1)+"]");
+		surrounding[6]=$("div[data-x="+x+"][data-y="+(y+1)+"]");
+		surrounding[7]=$("div[data-x="+(x+1)+"][data-y="+(y+1)+"]");
+		
+		return surrounding;
+	}
 	
  	function drawBoard(){
 		$("#board").empty();
@@ -39,36 +57,95 @@ $(document).ready(function(){
 			}
 		}	
 		$("#minecounter").empty();
-		$("#minecounter").append("<p>"+mineCount+" mines </p>");		
+		$("#minecounter").append("<p>"+mineCount+" mines </p>");	
+		
 	}
-
 	
-	function checkAdjacent(x,y){
+	function findZeroes(array, y, yPos, x, xPos){
+		for(var i = 0; i < array.length; i++){
+			if(array[i][y]===yPos){
+				if(array[i][x]===xPos){
+				return true;
+				}
+			}
+		}
+	}
+/* 	function revealSurrounding(y,x){
+		
+		$("div[data-x="+(x-1)+"][data-y="+(y-1)+"]").addClass("clicked").append(checkAdjacent(y-1,x-1));
+		$("div[data-x="+x+"][data-y="+(y-1)+"]").addClass("clicked").append(checkAdjacent(y-1,x));
+		$("div[data-x="+(x+1)+"][data-y="+(y-1)+"]").addClass("clicked").append(checkAdjacent(y-1,x+1));		
+		$("div[data-x="+(x-1)+"][data-y="+y+"]").addClass("clicked").append(checkAdjacent(y,x-1));		
+		$("div[data-x="+(x+1)+"][data-y="+y+"]").addClass("clicked").append(checkAdjacent(y,x+1));		
+		$("div[data-x="+(x-1)+"][data-y="+(y+1)+"]").addClass("clicked").append(checkAdjacent(y+1,x-1));		
+		$("div[data-x="+x+"][data-y="+(y+1)+"]").addClass("clicked").append(checkAdjacent(y+1,x));		
+		$("div[data-x="+(x+1)+"][data-y="+(y+1)+"]").addClass("clicked").append(checkAdjacent(y+1,x+1));
+	} */
+	function expand(y, x){
+		var zero = 0;
+		var surrounding=surroundingDivs(y,x);
+		if(findZeroes(expandZeroes, "y", y-1, "x", x-1)===true && (!$(surrounding[0]).hasClass("clicked"))){			
+		surrounding[0].append(zero);	
+			surrounding[0].addClass("clicked");
+			expand(y-1,x-1);
+		}
+		if(findZeroes(expandZeroes, "y", y-1, "x", x)===true && (!$(surrounding[1]).hasClass("clicked"))){			
+			surrounding[1].append(zero);	
+			surrounding[1].addClass("clicked");
+			expand(y-1,x);
+		}
+		if(findZeroes(expandZeroes, "y", y-1, "x", x+1)===true && (!$(surrounding[2]).hasClass("clicked"))){			
+			surrounding[2].append(zero);	
+			surrounding[2].addClass("clicked");
+			expand(y-1,x+1);
+		}
+		if(findZeroes(expandZeroes, "y", y, "x", x-1)===true && (!$(surrounding[3]).hasClass("clicked"))){			
+			surrounding[3].append(zero);	
+			surrounding[3].addClass("clicked");
+			expand(y,x-1);
+		}
+		if(findZeroes(expandZeroes, "y", y, "x", x+1)===true && (!$(surrounding[4]).hasClass("clicked"))){			
+			surrounding[4].append(zero);	
+			surrounding[4].addClass("clicked");
+			expand(y,x+1);
+		}
+		if(findZeroes(expandZeroes, "y", y+1, "x", x-1)===true && (!$(surrounding[5]).hasClass("clicked"))){			
+			surrounding[5].append(zero);	
+			surrounding[5].addClass("clicked");
+			expand(y+1,x-1);
+		}
+		if(findZeroes(expandZeroes, "y", y+1, "x", x)===true && (!$(surrounding[6]).hasClass("clicked"))){			
+			surrounding[6].append(zero);	
+			surrounding[6].addClass("clicked");
+			expand(y+1,x);
+		}
+		if(findZeroes(expandZeroes, "y", y+1, "x", x+1)===true && (!$(surrounding[7]).hasClass("clicked"))){			
+			surrounding[7].append(zero);	
+			surrounding[7].addClass("clicked");
+			expand(y+1,x+1);
+		}
+	}
+	
+	function checkAdjacent(y, x){
 		var tileX= x;
 		var tileY= y;
 		
 		var adjCount=0;
-							
+					
 			    //console.log(tileX+" "+tileY);
 				if(tileY > 0){
-					if(board[tileY-1][tileX-1]===true){adjCount+=1;}
+					if(tileX > 0){if(board[tileY-1][tileX-1]===true){adjCount+=1;}}
 					if(board[tileY-1][tileX]===true){adjCount+=1;}
 					if(board[tileY-1][tileX+1]===true){adjCount+=1;}
 				}
 				if(board[tileY][tileX-1]===true){adjCount+=1;}
 				if(board[tileY][tileX+1]===true){adjCount+=1;}
 				if(tileY < 9){
-					if(board[tileY+1][tileX-1]===true){adjCount+=1;}
+					if(tileX > 0){if(board[tileY+1][tileX-1]===true){adjCount+=1;}}
 					if(board[tileY+1][tileX]===true){adjCount+=1;}
 					if(board[tileY+1][tileX+1]===true){adjCount+=1;} 
-				}
-				
-				if(adjCount === 0)
-				{
-					
- 				} 
-				return adjCount;
-				
+				}				
+				return adjCount;				
 			}
 		//}	
 	
@@ -77,7 +154,7 @@ $(document).ready(function(){
 		for(var y = 0; y < boardHeight; y++){		
 			for(var x = 0; x < boardWidth; x++){	
 				if(board[y][x]!== true){
-					if(checkAdjacent(x,y)===0){				
+					if(checkAdjacent(y,x)===0){				
 						expandZeroes.push({y: y,x: x});
 						//console.log(expandZeroes);
 						}
@@ -106,7 +183,12 @@ $(document).ready(function(){
 				}else{
 					//checkAdjacent(tileX,tileY);
 					$(this).addClass("clicked");
-					$(this).append("<p>"+checkAdjacent(tileX,tileY)+"</p>");
+					$(this).append("<p>"+checkAdjacent(tileY,tileX)+"</p>");
+					if(checkAdjacent(tileY, tileX)===0)
+					{
+						expand(tileY, tileX);
+						//$("div[data-x="+tileX+"][data-y="+tileY+"]").append(adjCount);
+					} 
 				}
 			//alert(1);
 			return false;
@@ -116,4 +198,7 @@ $(document).ready(function(){
 	drawBoard();
 	addZeroes();
 	console.log(expandZeroes);
+	
 })
+
+//$("div[data-x="+tileX+"][data-y="+tileY+"]").append(adjCount);

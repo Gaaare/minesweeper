@@ -13,7 +13,11 @@
 	height:30px;
 	border:solid black 2px;
 	float:left;
+	font-size: 30px;
+	text-align:center;
+	overflow:hidden;
 }
+
 .mineTile{
 	background-color: red;
 }
