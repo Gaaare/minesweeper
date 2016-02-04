@@ -244,6 +244,9 @@ $(document).ready(function(){
 			return false;
 		}
 	})
+	$(document).on("click","#cheater",function(){
+		$(".mineTile").css("background-color","red");
+	})	
 	addMines();
 	drawBoard();
 	addZeroes();
