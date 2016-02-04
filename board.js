@@ -7,6 +7,7 @@ $(document).ready(function(){
 	var isMine = true;
 	var mineCount = 0;
 	
+	
 	function addMines(){
 		for(var y = 0; y < boardHeight; y++){		
 			board[y] = Array();		
@@ -77,98 +78,98 @@ $(document).ready(function(){
 		
 		if(y > 0 && x > 0 && findZeroes(expandZeroes, "y", y-1, "x", x-1) && 
 		(!$(surrounding[0]).hasClass("clicked"))){			
-			surrounding[0].append(zero)
+			surrounding[0].append(zero).removeClass("marked");
 			surrounding[0].addClass("clicked");
 			expand(y-1, x-1);
 		}else if(y > 0 && x > 0 && !findZeroes(expandZeroes, "y", y-1, "x", x-1) && 
 		(!$(surrounding[0]).hasClass("clicked"))){			
 			$(surrounding[0]).addClass("clicked");
 			$(surrounding[0]).empty();
-			$(surrounding[0]).append(checkAdjacent(y-1, x-1));
+			$(surrounding[0]).append(checkAdjacent(y-1, x-1)).removeClass("marked");
 		}
 		
 		if(y > 0 && findZeroes(expandZeroes, "y", y-1, "x", x)===true && 
 		(!$(surrounding[1]).hasClass("clicked"))){			
-			surrounding[1].append(zero);	
+			surrounding[1].append(zero).removeClass("marked");	
 			surrounding[1].addClass("clicked");
 			expand(y-1, x);
 		}else if(y > 0 && !findZeroes(expandZeroes, "y", y-1, "x", x) && 
 		(!$(surrounding[1]).hasClass("clicked"))){			
 			$(surrounding[1]).addClass("clicked");
 			$(surrounding[1]).empty();
-			$(surrounding[1]).append(checkAdjacent(y-1, x));
+			$(surrounding[1]).append(checkAdjacent(y-1, x)).removeClass("marked");
 		}
 		
 		if(y > 0 && x < 9 && findZeroes(expandZeroes, "y", y-1, "x", x+1)===true && 
 		(!$(surrounding[2]).hasClass("clicked"))){			
-			surrounding[2].append(zero);	
+			surrounding[2].append(zero).removeClass("marked");	
 			surrounding[2].addClass("clicked");
 			expand(y-1, x+1);
 		}else if(y > 0 && x < 9 && !findZeroes(expandZeroes, "y", y-1, "x", x+1) && 
 		(!$(surrounding[2]).hasClass("clicked"))){			
 			$(surrounding[2]).addClass("clicked");
 			$(surrounding[2]).empty();
-			$(surrounding[2]).append(checkAdjacent(y-1, x+1));
+			$(surrounding[2]).append(checkAdjacent(y-1, x+1)).removeClass("marked");
 		}
 		
 		if(x > 0 && findZeroes(expandZeroes, "y", y, "x", x-1)===true && 
 		(!$(surrounding[3]).hasClass("clicked"))){			
-			surrounding[3].append(zero);	
+			surrounding[3].append(zero).removeClass("marked");	
 			surrounding[3].addClass("clicked");
 			expand(y, x-1);
 		}else if(x > 0 && !findZeroes(expandZeroes, "y", y, "x", x-1) && 
 		(!$(surrounding[3]).hasClass("clicked"))){			
 			$(surrounding[3]).addClass("clicked");
 			$(surrounding[3]).empty();
-			$(surrounding[3]).append(checkAdjacent(y, x-1));
+			$(surrounding[3]).append(checkAdjacent(y, x-1)).removeClass("marked");
 		}
 		
 		if(x < 9 && findZeroes(expandZeroes, "y", y, "x", x+1)===true && 
 		(!$(surrounding[4]).hasClass("clicked"))){			
-			surrounding[4].append(zero);	
+			surrounding[4].append(zero).removeClass("marked");	
 			surrounding[4].addClass("clicked");
 			expand(y, x+1);
 		}else if(x < 9 && !findZeroes(expandZeroes, "y", y, "x", x+1) && 
 		(!$(surrounding[4]).hasClass("clicked"))){			
 			$(surrounding[4]).addClass("clicked");
 			$(surrounding[4]).empty();
-			$(surrounding[4]).append(checkAdjacent(y, x+1));
+			$(surrounding[4]).append(checkAdjacent(y, x+1)).removeClass("marked");
 		}
 		
 		if(y < 9 && x > 0 && findZeroes(expandZeroes, "y", y+1, "x", x-1)===true && 
 		(!$(surrounding[5]).hasClass("clicked"))){			
-			surrounding[5].append(zero);	
+			surrounding[5].append(zero).removeClass("marked");	
 			surrounding[5].addClass("clicked");
 			expand(y+1, x-1);
 		}else if(y < 9 && x > 0 && !findZeroes(expandZeroes, "y", y+1, "x", x-1) && 
 		(!$(surrounding[5]).hasClass("clicked"))){			
 			$(surrounding[5]).addClass("clicked");
 			$(surrounding[5]).empty();
-			$(surrounding[5]).append(checkAdjacent(y+1, x-1));
+			$(surrounding[5]).append(checkAdjacent(y+1, x-1)).removeClass("marked");
 		}
 		
 		if(y < 9 && findZeroes(expandZeroes, "y", y+1, "x", x)===true && 
 		(!$(surrounding[6]).hasClass("clicked"))){			
-			surrounding[6].append(zero);	
+			surrounding[6].append(zero).removeClass("marked");	
 			surrounding[6].addClass("clicked");
 			expand(y+1, x);
 		}else if(y < 9 && !findZeroes(expandZeroes, "y", y+1, "x", x) && 
 		(!$(surrounding[6]).hasClass("clicked"))){			
 			$(surrounding[6]).addClass("clicked");
 			$(surrounding[6]).empty();
-			$(surrounding[6]).append(checkAdjacent(y+1, x));
+			$(surrounding[6]).append(checkAdjacent(y+1, x)).removeClass("marked");
 		}
 		
 		if(y < 9 && x < 9 && findZeroes(expandZeroes, "y", y+1, "x", x+1)===true && 
 		(!$(surrounding[7]).hasClass("clicked"))){			
-			surrounding[7].append(zero);	
+			surrounding[7].append(zero).removeClass("marked");	
 			surrounding[7].addClass("clicked");
 			expand(y+1, x+1);
 		}else if(y < 9 && x < 9 && !findZeroes(expandZeroes, "y", y+1, "x", x+1) && 
 		(!$(surrounding[7]).hasClass("clicked"))){			
 			$(surrounding[7]).addClass("clicked");
 			$(surrounding[7]).empty();
-			$(surrounding[7]).append(checkAdjacent(y+1, x+1));
+			$(surrounding[7]).append(checkAdjacent(y+1, x+1)).removeClass("marked");
 		}
 	}
 	
@@ -220,7 +221,7 @@ $(document).ready(function(){
 	$(document).on("click","#board div",function(e){		 
 		var x= parseInt($(this).attr("data-x"));
 		var y= parseInt($(this).attr("data-y"));	
-		if(e.shiftKey){
+		if(e.shiftKey && (!$(this).hasClass("clicked"))){
 			if(!$(this).hasClass("marked")){
 				$(this).addClass("marked");
 				$(this).append("X");
